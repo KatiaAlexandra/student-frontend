@@ -7,29 +7,22 @@
               <div class="row d-flex justify-content-end mr-5">
                 <button class="btn btn-success" v-b-modal.modal-1>Registrar estudiante</button>
               </div>
-              <div class="row mt-4 d-flex justify-content-center align-items-center">
-                <div class="col-md-10">
-                  <b-table
-                    striped
-                    hover
-                    :fields="fields"
-                    :items="students"
-                    :per-page="7"
-                    :current-page="currentPageMain"
-                  >
-                    <template #cell(actions)="data">
-                      <button class="btn btn-info" @click="findByStudentIdentifier(data.item.studentIdentifier)"
-                              v-b-modal.modal-2>Actualizar</button>
-                      <button class="btn btn-danger mx-2" @click="findByStudentIdentifier(data.item.studentIdentifier)"
-                              v-b-modal.modal-3>Eliminar</button>
-                    </template>
-                  </b-table>
-                  <b-pagination
-                    v-model="currentPageMain"
-                    :total-rows="students.length"
-                    :per-page="7"
-                    aria-controls="my-table"
-                  ></b-pagination>
+
+              <div class="row mt-4" >
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-3"  v-for="student in students" :key="student.id">
+                  <b-card>
+                    <h4>{{`${student.name} ${student.p_lastname} ${student.m_lastname}`}}</h4>
+                    <h5>{{student.studentIdentifier}}</h5>
+                    <b-card-text>
+                      {{student.career}}
+                    </b-card-text>
+                    <b-card-text>{{student.email}}</b-card-text>
+                    <button class="btn btn-info" @click="findByStudentIdentifier(student.studentIdentifier)"
+                            v-b-modal.modal-2><b-icon icon="pencil-fill" aria-hidden="true"></b-icon></button>
+                    <button class="btn btn-danger mx-2" @click="findByStudentIdentifier(student.studentIdentifier)"
+                            v-b-modal.modal-3><b-icon icon="trash-fill" aria-hidden="true"></b-icon></button>
+                  </b-card>
                 </div>
               </div>
             </section>

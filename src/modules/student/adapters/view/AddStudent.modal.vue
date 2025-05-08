@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal id="modal-1" centered hide-footer hide-header title="BootstrapVue">
+    <b-modal id="modal-1" centered hide-footer hide-header title="BootstrapVue" @hidden="resetForm">
       <div>
         <h3>Agregar Estudiante</h3>
         <form class="my-4" action="">
@@ -53,10 +53,20 @@ export default Vue.extend({
   methods: {
     async saveUser() {
       const controller = new StudentController();
-      const response = await controller.save(this.student);
+      await controller.save(this.student);
 
       this.$bvModal.hide("modal-1");
       this.$emit("findAll");
+    },
+    resetForm(){
+      this.student = {
+        name: "",
+        p_lastname: "",
+        m_lastname:"",
+        email:"",
+        career: "",
+        studentIdentifier: ""
+      }
     }
   }
 })
