@@ -25,17 +25,60 @@ export class StudentStorageGateway implements StudentRepository{
         }).catch(()=>this.getError());
     }
     
-    findByStudentIdentifier(payload: string): Promise<ResponseApi<Student>> {
-        throw new Error("Method not implemented.");
+    async findByStudentIdentifier(payload: string): Promise<ResponseApi<Student>> {
+        return await fetch(`http://localhost:8081/api/student/${payload}`)
+            .then(data=>data.json()).then((student)=>{
+                return{
+                    code:200,
+                    error:false,
+                    message:'OK',
+                    entity:student
+                }as ResponseApi<Student>;
+            }).catch(()=>this.getError());
+
     }
-    save(payload: SaveStudentDto): Promise<ResponseApi<Student>> {
-        throw new Error("Method not implemented.");
+    async save(payload: SaveStudentDto): Promise<ResponseApi<Student>> {
+        return await fetch('http://localhost:8081/api/student', {
+            method:'POST',
+            body:JSON.stringify(payload),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(data=>data.json()).then(()=>{
+            return{
+                code:200,
+                error:false,
+                message:'STUDENT REGISTERED'
+            }as ResponseApi<Student>
+        }).catch(()=>this.getError());
     }
-    update(payload: UpdateStudentDto): Promise<ResponseApi<Student>> {
-        throw new Error("Method not implemented.");
+    async update(payload: UpdateStudentDto): Promise<ResponseApi<Student>> {
+        return await fetch('http://localhost:8081/api/student',{
+            method:'PUT',
+            body: JSON.stringify(payload),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        }).then(data => data.json())
+            .then(()=>{
+            return {
+                code:200,
+                error:false,
+                message:'STUDENT UPDATED'
+            }as ResponseApi<Student>
+        }).catch(()=>this.getError())
     }
-    delete(payload: string): Promise<ResponseApi<Student>> {
-        throw new Error("Method not implemented.");
+    async delete(payload: string): Promise<ResponseApi<Student>> {
+        return await fetch(`http://localhost:8081/api/student/${payload}`, {
+            method:'DELETE'
+        }).then(data=>data.json())
+            .then(()=>{
+                return {
+                    code:200,
+                    error:false,
+                    message:'OK'
+                }as ResponseApi<Student>
+            }).catch(()=>this.getError())
     }
     
 }
