@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <div class="mt-4">
-    <h1>Estudiantes</h1>
-    </div>
+      <b-nav class="bg-info d-flex align-items-center">
+        <b-img src="https://images.vexels.com/media/users/3/143401/isolated/preview/c1975b75a334884d2aa6c502bacb6a04-dibujos-animados-de-gorro-de-graduacion.png" height="50px" width="50px"></b-img>
+        <b-nav-text style="color: white" class="ml-2">Estudiantes</b-nav-text>
+      </b-nav>
     <router-view/>
   </div>
 </template>

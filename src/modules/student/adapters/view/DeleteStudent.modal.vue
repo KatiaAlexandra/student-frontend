@@ -2,14 +2,15 @@
   <div>
     <b-modal id="modal-3" centered hide-footer hide-header title="BootstrapVue">
       <div class="d-block text-center">
+        <h3>Eliminar Estudiante</h3>
         <h5>¿Estas seguro de eliminar a este estudiante?</h5>
       </div>
       <div class="row">
         <div class="col-6">
-          <b-button class="mt-3" variant="outline-dark" block @click="hideModal">Cancelar</b-button>
+          <b-button class="mt-3" variant="secondary" block @click="hideModal">Cancelar</b-button>
         </div>
         <div class="col-6">
-          <b-button class="mt-3" variant="outline-danger" block @click="deleteStudent">Aceptar</b-button>
+          <b-button class="mt-3" variant="danger" block @click="deleteStudent">Aceptar</b-button>
         </div>
       </div>
     </b-modal>

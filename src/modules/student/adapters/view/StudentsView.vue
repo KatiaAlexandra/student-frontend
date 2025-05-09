@@ -4,22 +4,24 @@
         <div class="row">
           <div class="col-md-12">
             <section>
-              <div class="row d-flex justify-content-end mr-5">
+              <div class="row d-flex justify-content-between align-items-center container-fluid">
+                <h3>Gestión de Estudiantes</h3>
                 <button class="btn btn-success" v-b-modal.modal-1>Registrar estudiante</button>
               </div>
 
-              <div class="row mt-4" >
-
+              <div class="row mt-3" >
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-3"  v-for="student in students" :key="student.id">
-                  <b-card>
-                    <h4>{{`${student.name} ${student.p_lastname} ${student.m_lastname}`}}</h4>
+                  <b-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                    <h4>{{`${student.name} ${student.p_lastname}`}}</h4>
                     <h5>{{student.studentIdentifier}}</h5>
                     <b-card-text>
                       {{student.career}}
                     </b-card-text>
                     <b-card-text>{{student.email}}</b-card-text>
                     <button class="btn btn-info" @click="findByStudentIdentifier(student.studentIdentifier)"
-                            v-b-modal.modal-2><b-icon icon="pencil-fill" aria-hidden="true"></b-icon></button>
+                            v-b-modal.modal-2>
+                      <b-icon icon="pencil-fill" aria-hidden="true"></b-icon>
+                    </button>
                     <button class="btn btn-danger mx-2" @click="findByStudentIdentifier(student.studentIdentifier)"
                             v-b-modal.modal-3><b-icon icon="trash-fill" aria-hidden="true"></b-icon></button>
                   </b-card>
@@ -50,18 +52,8 @@
     },
     data() {
       return {
-        fields: [
-          { key: 'name', label: 'Nombre', sortable: true },
-          { key: 'p_lastname', label: 'Primer apellido', sortable: true },
-          { key: 'm_lastname', label: 'Segundo apellido', sortable: true },
-          { key: 'career', label: 'Carrera', sortable: true },
-          { key: 'email', label: 'Correo', sortable: true },
-          {key: 'studentIdentifier', label:'Matricula', sortable:true},
-          {key:'actions', label:'Acciones'}
-        ],
         students: [] as Student[],
-        student:{} as Student,
-        currentPageMain: 1,
+        student:{} as Student
       };
     },
     methods: {
