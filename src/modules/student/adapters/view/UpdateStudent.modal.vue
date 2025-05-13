@@ -44,6 +44,7 @@
 import Vue from 'vue';
 import {StudentController} from "@/modules/student/adapters/students.controller";
 import { UpdateStudentDto } from '../dto/update-student';
+import {showErrorToast, showSuccessToast} from "@/kernel/functions";
 
 export default Vue.extend({
   name: 'updateStudentModal',
@@ -77,7 +78,22 @@ watch: {
   methods: {
     async updateStudent() {
       const controller = new StudentController();
-      await controller.update(this.editedStudent);
+      const {result} = await controller.update(this.editedStudent);
+
+      if(result != null){
+        showSuccessToast({
+          title: 'Registro exitoso',
+          text: 'Se ha registrado al estudiante correctamente',
+          timer: 3000
+        })
+        this.$emit("findAll");
+      }else{
+        showErrorToast({
+          title: 'Error al registrar',
+          text: 'No se ha podido registrar al estudiante',
+          timer: 3000
+        })
+      }
 
       this.$bvModal.hide("modal-2");
       this.$emit("findAll");

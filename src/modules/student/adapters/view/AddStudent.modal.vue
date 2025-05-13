@@ -43,6 +43,8 @@
 import Vue from 'vue'
 import {StudentController} from "@/modules/student/adapters/students.controller";
 import { SaveStudentDto } from '../dto/save-student';
+import {showErrorToast, showSuccessToast} from "@/kernel/functions";
+
 export default Vue.extend({
   name: 'AddStudentModal',
   data() {
@@ -53,10 +55,24 @@ export default Vue.extend({
   methods: {
     async saveUser() {
       const controller = new StudentController();
-      await controller.save(this.student);
 
-      this.$bvModal.hide("modal-1");
-      this.$emit("findAll");
+        const {result} = await controller.save(this.student);
+        this.$bvModal.hide("modal-1");
+
+        if(result != null){
+          showSuccessToast({
+            title: 'Registro exitoso',
+            text: 'Se ha registrado al estudiante correctamente',
+            timer: 3000
+          })
+          this.$emit("findAll");
+        }else{
+          showErrorToast({
+            title: 'Error al registrar',
+            text: 'No se ha podido registrar al estudiante',
+            timer: 3000
+        })
+        }
     },
     resetForm(){
       this.student = {

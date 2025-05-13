@@ -11,72 +11,35 @@ import {UpdateStudentInteractor} from "@/modules/student/use-cases/update-studen
 import {DeleteStudentInteractor} from "@/modules/student/use-cases/delete-student.interactor";
 
 export class StudentController{
-    findAll(){
-        const repo : StudentRepository = new StudentStorageGateway();
-        const interactor : GetStudentsInteractor = new GetStudentsInteractor(repo);
-        try{
-            return interactor.execute();
-        }catch(err){
-            return{ 
-                code: 500,
-                message: 'INTERNAL ERROR IN CONTROLLER'
-            }as ResponseApi<Student>;
-        }
+
+    findAll(): Promise<ResponseApi<Student[]>>{
+        const studentRepository : StudentRepository = new StudentStorageGateway();
+        const interactor = new GetStudentsInteractor(studentRepository);
+        return interactor.execute();
+
     }
 
-    findByStudentIdentifier(payload: string){
-        const repo: StudentRepository= new StudentStorageGateway();
-        const interactor : GetStudentInteractor = new GetStudentInteractor(repo);
-
-        try{
-            return interactor.execute(payload);
-        }catch (err){
-            return{
-                code:500,
-                message:'INTERNAL ERROR IN CONTROLLER'
-            }as ResponseApi<Student>
-        }
+    save(student : SaveStudentDto): Promise<ResponseApi<Student>>{
+        const studentRepository: StudentRepository = new StudentStorageGateway();
+        const interactor = new SaveStudentInteractor(studentRepository);
+        return interactor.execute(student);
     }
 
-    save(payload: SaveStudentDto){
-        const repo: StudentRepository = new StudentStorageGateway();
-        const interactor : SaveStudentInteractor = new SaveStudentInteractor(repo);
-
-        try{
-            return interactor.execute(payload);
-        }catch (err){
-            return {
-                code:500,
-                message:'INTERNAL ERROR IN CONTROLLER'
-            }as ResponseApi<Student>;
-        }
+    delete(id: string): Promise<ResponseApi<Student>>{
+        const studentRepository: StudentRepository = new StudentStorageGateway();
+        const interactor: DeleteStudentInteractor = new DeleteStudentInteractor(studentRepository);
+        return interactor.execute(id);
     }
 
-    update(payload: UpdateStudentDto){
-        const repo: StudentRepository = new StudentStorageGateway();
-        const interactor : UpdateStudentInteractor = new UpdateStudentInteractor(repo);
-
-        try{
-            return interactor.execute(payload);
-        }catch (err) {
-            return{
-                code:500,
-                message:'INTERNAL ERROR IN CONTROLLER'
-            }as ResponseApi<Student>
-        }
+    findByStudentIdentifier(id: string): Promise<ResponseApi<Student>>{
+        const studentRepository : StudentRepository = new StudentStorageGateway();
+        const interactor :GetStudentInteractor = new GetStudentInteractor(studentRepository);
+        return interactor.execute(id);
     }
 
-    delete(payload:string){
-        const repo: StudentRepository = new StudentStorageGateway();
-        const interactor: DeleteStudentInteractor = new DeleteStudentInteractor(repo);
-
-        try{
-            return interactor.execute(payload);
-        }catch (err){
-            return{
-                code:500,
-                message:'INTERNAL ERROR IN CONTROLLER'
-            }as ResponseApi<Student>
-        }
+    update(student: UpdateStudentDto) : Promise<ResponseApi<Student>>{
+        const studentRepository : StudentRepository =  new StudentStorageGateway();
+        const interactor : UpdateStudentInteractor = new UpdateStudentInteractor(studentRepository);
+        return interactor.execute(student);
     }
 }

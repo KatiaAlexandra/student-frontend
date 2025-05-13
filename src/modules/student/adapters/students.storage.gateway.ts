@@ -3,82 +3,29 @@ import { StudentRepository } from "../use-cases/ports/student.repository";
 import { Student } from "../entities/student";
 import { SaveStudentDto } from "./dto/save-student";
 import { UpdateStudentDto } from "./dto/update-student";
+import {handleRequest} from "@/config/http-client.gateway";
 
 export class StudentStorageGateway implements StudentRepository{
-    
-    getError(): ResponseApi<Student>{
-        return {
-            code: 500, 
-            error: true,
-            message: 'INTERNAL ERROR SERVER'
-        }as ResponseApi<Student>;
+
+    async findAll(): Promise<ResponseApi<Student[]>>{
+        return handleRequest<Student[]>('get', '/student');
     }
 
-    async findAll(): Promise<ResponseApi<Student>> {
-        return await fetch('http://localhost:8081/api/student').then(data => data.json())
-        .then((students) => {
-            return {
-                code:200, 
-                message:'OK',
-                entities: students
-            } as ResponseApi<Student>;
-        }).catch(()=>this.getError());
+    delete(payload: string): Promise<ResponseApi<Student>> {
+        return handleRequest<Student>('delete', `student/${payload}`)
     }
-    
-    async findByStudentIdentifier(payload: string): Promise<ResponseApi<Student>> {
-        return await fetch(`http://localhost:8081/api/student/${payload}`)
-            .then(data=>data.json()).then((student)=>{
-                return{
-                    code:200,
-                    error:false,
-                    message:'OK',
-                    entity:student
-                }as ResponseApi<Student>;
-            }).catch(()=>this.getError());
 
+    findByStudentIdentifier(payload: string): Promise<ResponseApi<Student>> {
+        return handleRequest<Student>('get', `/student/${payload}`)
     }
-    async save(payload: SaveStudentDto): Promise<ResponseApi<Student>> {
-        return await fetch('http://localhost:8081/api/student', {
-            method:'POST',
-            body:JSON.stringify(payload),
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }).then(data=>data.json()).then(()=>{
-            return{
-                code:200,
-                error:false,
-                message:'STUDENT REGISTERED'
-            }as ResponseApi<Student>
-        }).catch(()=>this.getError());
+
+    save(payload: SaveStudentDto): Promise<ResponseApi<Student>> {
+        return handleRequest<Student, SaveStudentDto>('post', '/student', payload)
     }
-    async update(payload: UpdateStudentDto): Promise<ResponseApi<Student>> {
-        return await fetch('http://localhost:8081/api/student',{
-            method:'PUT',
-            body: JSON.stringify(payload),
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        }).then(data => data.json())
-            .then(()=>{
-            return {
-                code:200,
-                error:false,
-                message:'STUDENT UPDATED'
-            }as ResponseApi<Student>
-        }).catch(()=>this.getError())
+
+    update(payload: UpdateStudentDto): Promise<ResponseApi<Student>> {
+        return handleRequest<Student, UpdateStudentDto>('put', '/student', payload)
     }
-    async delete(payload: string): Promise<ResponseApi<Student>> {
-        return await fetch(`http://localhost:8081/api/student/${payload}`, {
-            method:'DELETE'
-        }).then(data=>data.json())
-            .then(()=>{
-                return {
-                    code:200,
-                    error:false,
-                    message:'OK'
-                }as ResponseApi<Student>
-            }).catch(()=>this.getError())
-    }
+
     
 }
